@@ -1,64 +1,39 @@
-# NordicIntel Python template
+> **Python project skeleton — no application code implemented yet.**
+> This repository was created from the
+> [NordicIntel Python template](https://github.com/nordicintel/python-template).
+> It contains project scaffolding and a setup smoke test, not a working implementation.
+> **Remove this notice after the first commit implementing real project functionality;
+> repository setup and preparation commits do not count.**
 
-A starting point for new NordicIntel Python repos: Python 3.13, uv, Ruff, pytest,
-and Ubuntu CI. No runtime dependencies.
+# wayback-verify
 
-## Create a repository
+Async Wayback archiving and file verification with SQLite history.
 
-1. Select **Use this template** on GitHub and create your repo under `nordicintel`.
-2. Clone the new repo and install [uv](https://docs.astral.sh/uv/getting-started/installation/).
-3. From its root, run:
+## Development
 
-```sh
-uv run --no-project --python 3.13 scripts/setup_repo.py
-```
-
-Setup asks for the repository name, Python import name, description, whether to
-enable PyPI publishing, and a license (`none` or `MIT`; add another license later
-if needed). The owner is `nordicintel`, the import name is derived from the repo
-name, and the initial version is `0.1.0`. No license is selected by default.
-
-Setup replaces placeholders, installs the development environment, updates
-`uv.lock`, and removes itself and its supporting files. Review and commit the
-result. This is a one-time starting point; generated repos are independent.
-
-For unattended setup, supply all choices:
-
-```sh
-uv run --no-project --python 3.13 scripts/setup_repo.py --repo example-project --module example_project --description "Example project." --no-publish --license none
-```
-
-Use `--publish` to include the release workflow.
-
-## Included
-
-- `src/<package>/`, `tests/`, and `scripts/`; one package import smoke test.
-- `pyproject.toml`, `uv.lock`, and Python 3.13 configuration.
-- `.github/workflows/checks.yml`: Ruff formatting/linting and pytest on pushes and PRs.
-- A short project README with development and release commands and a prominent
-  skeleton notice linking to this template. Remove the notice after the first
-  real implementation commit, not during repository setup or preparation.
-
-## Checks
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
 
 ```sh
 uv sync --locked
-uv run ruff format --check .
+uv run ruff format .
 uv run ruff check .
 uv run pytest
 ```
 
-## Optional PyPI publishing
+Code lives in `src/wayback_verify/`, tests in `tests/`, and utilities in `scripts/`.
+Python 3.13 is used locally and in Ubuntu CI. Commit `uv.lock` when dependencies
+change. CI checks formatting with `uv run ruff format --check .`.
 
-Set the distribution name in the generated repo's `pyproject.toml`. Commit the
-version and lock file, then publish a GitHub Release with a matching tag such as
-`v0.1.0`. The workflow verifies the version, runs checks, builds a wheel and source
-distribution, and publishes both to PyPI.
+## Releases
 
-**Publishing setup reminder:** In each generated repository, go to **Settings →
-Secrets and variables → Actions** and create a repository secret named
-`PYPI_TOKEN`. The PyPI token must permit uploads to the intended project.
-No credentials belong in this template.
+PyPI publishing is not configured. To build local distributions, run `uv build`.
 
-Publishing is absent from generated repos when disabled. Releases and uploads
-are explicit actions; creating a repo or pushing a commit does not publish it.
+## License
+
+No license has been selected. Add one when appropriate.
+
+## Implementation plan
+
+See [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the package scope, API,
+implementation order, and verification requirements. The functionality described
+there is planned; this repository currently contains the configured starter.
