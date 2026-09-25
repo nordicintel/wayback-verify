@@ -8,20 +8,37 @@ version = "0.1.0"
 description = "Async Wayback archiving and file verification with SQLite history."
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "aiohttp>=3.10,<4",
+    "tqdm>=4.66,<5",
+]
 
 [project.urls]
 Repository = "https://github.com/nordicintel/wayback-verify"
 
 [dependency-groups]
-dev = ["pytest>=8,<10", "ruff>=0.13,<1"]
+dev = [
+    # aioresponses 0.7.9 cannot build aiohttp 3.14 responses yet
+    # (pnuckowski/aioresponses#288); test against 3.13 until it can.
+    "aiohttp<3.14",
+    "aioresponses>=0.7.8,<1",
+    "mypy>=1.15,<3",
+    "pytest>=8,<10",
+    "pytest-asyncio>=1.0,<2",
+    "ruff>=0.13,<1",
+    "types-tqdm>=4.66",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/wayback_verify"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--import-mode=importlib"
+addopts = "--import-mode=importlib -m 'not live'"
+asyncio_mode = "auto"
+pythonpath = ["tests"]
+asyncio_default_fixture_loop_scope = "function"
+markers = ["live: talks to the real Internet Archive (opt-in: pytest -m live)"]
 
 [tool.ruff]
 target-version = "py313"
@@ -29,3 +46,8 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "UP", "B"]
+
+[tool.mypy]
+strict = true
+python_version = "3.13"
+files = ["src"]
